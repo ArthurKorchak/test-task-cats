@@ -11,6 +11,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { mainReducer } from './store/main.reducer';
+import { environment } from 'src/environments/environment';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -28,13 +34,23 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatGridListModule,
+    StoreDevtoolsModule,
+    StoreModule.forRoot({ main: mainReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, 
+      logOnly: environment.production, 
+      autoPause: true, 
+    }),
+    EffectsModule.forRoot([]),
   ],
   exports: [
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatPaginatorModule
+    // MatAutocompleteModule,
+    // MatFormFieldModule,
+    // MatInputModule,
+    // MatPaginatorModule,
+    // MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

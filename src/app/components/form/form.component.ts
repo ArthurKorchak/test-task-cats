@@ -1,53 +1,49 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Breed } from 'src/app/models/breed';
+import { MainSelectors } from 'src/app/store/main.selectors';
+import { ImagesService } from 'src/app/services/images.service';
+import { MainActions } from 'src/app/store/main.actions';
 
 @Component({
   selector: 'app-form',
-  template: `
-    <form class="example-form">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Number</mat-label>
-        <input type="text"
-          placeholder="Pick one"
-          aria-label="Number"
-          matInput
-          [formControl]="myControl"
-          [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-  `,
-  styles: [
-  ]
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
 
-  ccc = new FormControl('');
-  myControl = new FormControl('');
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  public myControl = new FormControl('All');
+  public filteredOptions: Observable<string[]>;
+  private options: string[] = [];
+  private breeds: Breed[] = [];
 
-  constructor() {
+  constructor(private store$: Store, private imagesService: ImagesService) {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
-  }
+  };
 
   ngOnInit() {
-    
-  }
+    this.store$.select(MainSelectors.breeds).subscribe(resp => {
+      this.options = ['All', ...resp.map(elem => elem.name)];
+      this.breeds = resp;
+    });
+  };
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
+  };
 
-}
+  public onSubmit() {
+    const id = this.breeds.find(elem => elem.name === this.myControl.value)?.id;
+    this.imagesService.getImages(10, 1, id)
+      .subscribe(res => {
+        this.store$.dispatch(MainActions.setImages({ images: res.body ? res.body : [] }));
+      });
+  };
+};
