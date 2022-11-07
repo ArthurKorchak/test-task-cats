@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Breed } from 'src/app/models/breed';
 import { MainSelectors } from 'src/app/store/main.selectors';
 import { ImagesService } from 'src/app/services/images.service';
+import { MainActions } from 'src/app/store/main.actions';
 
 @Component({
   selector: 'app-form',
@@ -40,6 +41,8 @@ export class FormComponent implements OnInit {
 
   public onSubmit() {
     const id = this.breeds.find(elem => elem.name === this.myControl.value)?.id;
+    this.store$.dispatch(MainActions.setCurrentPage({ currentPage: 1 }));
+    this.store$.dispatch(MainActions.setSizeOfPage({ sizeOfPage: 10 }));
     this.imagesService.getImages(10, 1, id);
   };
 };
