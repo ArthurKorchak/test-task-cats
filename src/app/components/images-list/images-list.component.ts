@@ -6,24 +6,8 @@ import { MainSelectors } from 'src/app/store/main.selectors';
 
 @Component({
   selector: 'app-images-list',
-  template: `
-    <mat-grid-list cols="5" rowHeight="2:1.5">
-      <mat-grid-tile *ngFor="let image of images">
-      <img [src]="image.url">
-      </mat-grid-tile>
-    </mat-grid-list>
-  `,
-  styles: [
-    `mat-grid-tile {
-      background: lightblue;
-    }
-    
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }`
-  ]
+  templateUrl: './images-list.component.html',
+  styleUrls: ['./images-list.component.scss']
 })
 export class ImagesListComponent implements OnInit {
 

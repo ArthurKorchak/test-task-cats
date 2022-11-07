@@ -1,3 +1,4 @@
 export interface Image {
-  url: string
+  url: string,
+  breeds: {id : string}[]
 };

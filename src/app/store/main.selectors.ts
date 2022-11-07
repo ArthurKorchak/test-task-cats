@@ -8,7 +8,9 @@ export namespace MainSelectors {
 
   export const images = createSelector(allState, state => state.images);
 
-  export const totalPages = createSelector(allState, state => state.totalPages);
+  export const totalImages = createSelector(allState, state => state.totalImages);
+
+  export const sizeOfPage = createSelector(allState, state => state.sizeOfPage);
 
   export const currentPage = createSelector(allState, state => state.currentPage);
 }

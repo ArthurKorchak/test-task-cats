@@ -13,9 +13,14 @@ export namespace MainActions {
     props<{ images: Image[] }>()
   );
 
-  export const setTotalPages = createAction(
-    'SET_TOTAL_PAGES',
-    props<{ totalPages: number }>()
+  export const setTotalImages = createAction(
+    'SET_TOTAL_IMAGES',
+    props<{ totalImages: number }>()
+  );
+
+  export const setSizeOfPage = createAction(
+    'SET_SIZE-OF_PAGE',
+    props<{ sizeOfPage: number }>()
   );
 
   export const setCurrentPage = createAction(

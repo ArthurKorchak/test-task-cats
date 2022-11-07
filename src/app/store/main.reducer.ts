@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { MainActions } from './main.actions';
 import { Breed } from '../models/breed';
 import { Image } from '../models/image';
@@ -6,16 +6,16 @@ import { Image } from '../models/image';
 export interface AppState {
   breeds: Breed[];
   images: Image[];
-  imagesPerPage: number;
-  totalPages: number;
-  currentPage: number;
+  totalImages: number;
+  sizeOfPage: number;
+  currentPage: number
 };
 
 const initialState: AppState = {
   breeds: [],
   images: [],
-  imagesPerPage: 10,
-  totalPages: 1,
+  totalImages: 0,
+  sizeOfPage: 10,
   currentPage: 1
 };
 
@@ -31,9 +31,14 @@ export const mainReducer = createReducer(
     images: images
   })),
 
-  on(MainActions.setTotalPages, (state, { totalPages }) => ({
+  on(MainActions.setTotalImages, (state, { totalImages }) => ({
     ...state,
-    totalPages: totalPages
+    totalImages: totalImages
+  })),
+
+  on(MainActions.setSizeOfPage, (state, { sizeOfPage }) => ({
+    ...state,
+    sizeOfPage: sizeOfPage
   })),
 
   on(MainActions.setCurrentPage, (state, { currentPage }) => ({
